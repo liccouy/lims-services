@@ -1,6 +1,6 @@
 {
-  "name": "node-typescript-koa-rest",
-  "version": "1.6.0",
+  "name": "lims-services",
+  "version": "1.0.0",
   "description": "API REST using NodeJS and KOA framework, typescript. TypeORM for SQL with class-validators. Middlewares JWT, CORS, Winston Logger. Swagger API docs",
   "main": "dist/server.js",
   "scripts": {
@@ -18,9 +18,9 @@
     "node": "10.x.x",
     "npm": "6.x.x"
   },
-  "author": "Javier Aviles",
+  "author": "Liccouy",
   "license": "MIT",
-  "homepage": "https://github.com/javieraviles/node-typescript-koa-rest#readme",
+  "homepage": "https://github.com/liccouy/lims-services#readme",
   "keywords": [
     "typescript",
     "koa",
@@ -37,7 +37,7 @@
     "cors",
     "github actions"
   ],
-  "repository": "github:javieraviles/node-typescript-koa-rest",
+  "repository": "github:liccouy/lims-services",
   "devDependencies": {
     "@types/cron": "^1.7.1",
     "@types/dotenv": "^6.1.1",
@@ -66,9 +66,9 @@
     "koa-jwt": "^3.3.2",
     "koa-router": "^7.4.0",
     "koa-swagger-decorator": "^1.5.16",
-    "pg": "^7.4.3",
     "pg-connection-string": "^2.0.0",
     "reflect-metadata": "^0.1.12",
+    "sqlite3": "^4.1.1",
     "typeorm": "^0.2.18",
     "winston": "^3.2.1"
   }

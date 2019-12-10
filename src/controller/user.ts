@@ -4,7 +4,7 @@ import { validate, ValidationError } from 'class-validator';
 import { request, summary, path, body, responsesAll, tagsAll } from 'koa-swagger-decorator';
 import { User, userSchema } from '../entity/user';
 
-@responsesAll({ 200: { description: 'success'}, 400: { description: 'bad request'}, 401: { description: 'unauthorized, missing/wrong jwt token'}})
+@responsesAll({ 200: { description: 'success' }, 400: { description: 'bad request' }, 401: { description: 'unauthorized, missing/wrong jwt token' } })
 @tagsAll(['User'])
 export default class UserController {
 
@@ -21,6 +21,7 @@ export default class UserController {
         // return OK status code and loaded users array
         ctx.status = 200;
         ctx.body = users;
+        ctx.append('content-range', `${users.length}`);
     }
 
     @request('get', '/users/{id}')
@@ -163,7 +164,7 @@ export default class UserController {
         const userRepository = getManager().getRepository(User);
 
         // find test users
-        const usersToRemove: User[] = await userRepository.find({ where: { email: Like('%@citest.com')} });
+        const usersToRemove: User[] = await userRepository.find({ where: { email: Like('%@citest.com') } });
 
         // the user is there so can be removed
         await userRepository.remove(usersToRemove);

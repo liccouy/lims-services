@@ -21,18 +21,34 @@ const connectionOptions = PostgressConnectionStringParser.parse(config.databaseU
 // note that its not active database connection
 // TypeORM creates you connection pull to uses connections from pull on your requests
 createConnection({
-    type: 'postgres',
-    host: connectionOptions.host,
-    port: connectionOptions.port,
-    username: connectionOptions.user,
-    password: connectionOptions.password,
-    database: connectionOptions.database,
-    synchronize: true,
-    logging: false,
-    entities: config.dbEntitiesPath,
-    extra: {
-        ssl: config.dbsslconn, // if not development, will use SSL
-    }
+    'type': 'sqlite',
+    'database': 'database.sqlite',
+    'synchronize': true,
+    'logging': false,
+    'entities': config.dbEntitiesPath,
+    // 'migrations': [
+    //     'src/migration/**/*.ts'
+    // ],
+    // 'subscribers': [
+    //     'src/subscriber/**/*.ts'
+    // ],
+    // 'cli': {
+    //     'entitiesDir': 'src/entity',
+    //     'migrationsDir': 'src/migration',
+    //     'subscribersDir': 'src/subscriber'
+    // }
+    // type: 'postgres',
+    // host: connectionOptions.host,
+    // port: connectionOptions.port,
+    // username: connectionOptions.user,
+    // password: connectionOptions.password,
+    // database: connectionOptions.database,
+    // synchronize: true,
+    // logging: false,
+    // entities: config.dbEntitiesPath,
+    // extra: {
+    //     ssl: config.dbsslconn, // if not development, will use SSL
+    // }
 }).then(async connection => {
 
     const app = new Koa();

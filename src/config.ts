@@ -11,14 +11,14 @@ export interface IConfig {
     dbEntitiesPath: string[];
     cronJobExpression: string;
 }
-
-const isDevMode = process.env.NODE_ENV == 'development';
+console.log(process.env.NODE_ENV);
+const isDevMode = true || process.env.NODE_ENV == 'development';
 
 const config: IConfig = {
     port: +process.env.PORT || 3000,
     debugLogging: isDevMode,
     dbsslconn: !isDevMode,
-    jwtSecret: process.env.JWT_SECRET || 'your-secret-whatever',
+    jwtSecret: process.env.JWT_SECRET || 'helloworld',
     databaseUrl: process.env.DATABASE_URL || 'postgres://user:pass@localhost:5432/apidb',
     dbEntitiesPath: [
       ... isDevMode ? ['src/entity/**/*.ts'] : ['dist/entity/**/*.js'],
