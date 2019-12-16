@@ -9,7 +9,7 @@ export class User {
     @Column({
         length: 80
     })
-    @Length(10, 80)
+    @Length(5, 80)
     name: string;
 
     @Column({
@@ -18,6 +18,19 @@ export class User {
     @Length(10, 100)
     @IsEmail()
     email: string;
+
+    @Column({
+        length: 10,
+        nullable: true,
+    })
+    @Length(1, 10)
+    role: string;
+
+    @Column({
+        length: 10,
+        nullable: true,
+    })
+    password: string;
 }
 
 export const userSchema = {

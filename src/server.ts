@@ -6,7 +6,6 @@ import cors from '@koa/cors';
 import winston from 'winston';
 import { createConnection } from 'typeorm';
 import 'reflect-metadata';
-import * as PostgressConnectionStringParser from 'pg-connection-string';
 
 import { logger } from './logging';
 import { config } from './config';
@@ -15,7 +14,6 @@ import { protectedRouter } from './protectedRoutes';
 import { cron } from './cron';
 
 // Get DB connection options from env variable
-const connectionOptions = PostgressConnectionStringParser.parse(config.databaseUrl);
 
 // create connection with database
 // note that its not active database connection

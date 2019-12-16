@@ -1,17 +1,11 @@
 # Node - Koa - Typescript Project
 
 
-[![NPM version](https://img.shields.io/npm/v/node-typescript-koa-rest.svg)](https://www.npmjs.com/package/node-typescript-koa-rest)
-[![Dependency Status](https://david-dm.org/javieraviles/node-typescript-koa-rest.svg)](https://david-dm.org/javieraviles/node-typescript-koa-rest)
-[![Actions Status](https://github.com/javieraviles/node-typescript-koa-rest/workflows/test/badge.svg)](https://github.com/javieraviles/node-typescript-koa-rest/actions)
-
-
 The main purpose of this repository is to build a good project setup and workflow for writing a Node api rest in TypeScript using KOA and an SQL DB.
 
 Koa is a new web framework designed by the team behind Express, which aims to be a smaller, more expressive, and more robust foundation for web applications and APIs. Through leveraging generators Koa allows you to ditch callbacks and greatly increase error-handling. Koa does not bundle any middleware within core, and provides an elegant suite of methods that make writing servers fast and enjoyable.
 
-Through Github Actions CI, this boilerplate is deployed [here](https://node-typescript-koa-rest.herokuapp.com/)! You can try to make requests to the different defined endpoints and see how it works. The following Authorization header will have to be set (already signed with the boilerplate's secret) to pass the JWT middleware:
-
+secret: boilerplate
 HEADER (DEMO)
 ```
 Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSmF2aWVyIEF2aWxlcyIsImVtYWlsIjoiYXZpbGVzbG9wZXouamF2aWVyQGdtYWlsLmNvbSJ9.7oxEVGy4VEtaDQyLiuoDvzdO0AyrNrJ_s9NU3vko5-k
@@ -99,7 +93,7 @@ To build and run this app locally you will need:
 # Getting Started
 - Clone the repository
 ```
-git clone --depth=1 https://github.com/javieraviles/node-typescript-koa-rest.git <project_name>
+git clone --depth=1 https://github.com/liccouy/lims-services.git <project_name>
 ```
 - Install dependencies
 ```
