@@ -2,40 +2,40 @@ import { BaseContext } from 'koa';
 import { getManager, Repository, Not, Equal, Like } from 'typeorm';
 import { validate, ValidationError } from 'class-validator';
 import { request, summary, path, body, responsesAll, tagsAll } from 'koa-swagger-decorator';
-import { User, userSchema } from '../entity/user';
+import { Project, projectSchema } from '../entity/project';
 
 @responsesAll({ 200: { description: 'success' }, 400: { description: 'bad request' }, 401: { description: 'unauthorized, missing/wrong jwt token' } })
-@tagsAll(['User'])
-export default class UserController {
+@tagsAll(['Project'])
+export default class ProjectController {
 
-    @request('get', '/users')
+    @request('get', '/projects')
     @summary('Find all users')
-    public static async getUsers(ctx: BaseContext) {
+    public static async getProjects(ctx: BaseContext) {
 
         // get a user repository to perform operations with user
-        const userRepository: Repository<User> = getManager().getRepository(User);
-console.log(ctx.query.filter);
+        const entityRepository: Repository<Project> = getManager().getRepository(Project);
+
         // load all users
-        const users: User[] = await userRepository.find(JSON.parse(ctx.query.filter));
+        const items: Project[] = await entityRepository.find();
 
         // return OK status code and loaded users array
         ctx.status = 200;
-        ctx.body = users;
-        ctx.append('Content-Range', `${users.length}`);
+        ctx.body = items;
+        ctx.append('Content-Range', `${items.length}`);
     }
 
-    @request('get', '/users/{id}')
-    @summary('Find user by id')
+    @request('get', '/projects/{id}')
+    @summary('Find project by id')
     @path({
         id: { type: 'number', required: true, description: 'id of user' }
     })
-    public static async getUser(ctx: BaseContext) {
+    public static async getProject(ctx: BaseContext) {
 
         // get a user repository to perform operations with user
-        const userRepository: Repository<User> = getManager().getRepository(User);
+        const userRepository: Repository<Project> = getManager().getRepository(Project);
 
         // load user by id
-        const user: User = await userRepository.findOne(+ctx.params.id || 0);
+        const user: Project = await userRepository.findOne(+ctx.params.id || 0);
 
         if (user) {
             // return OK status code and loaded user object
@@ -49,19 +49,18 @@ console.log(ctx.query.filter);
 
     }
 
-    @request('post', '/users')
+    @request('post', '/projects')
     @summary('Create a user')
-    @body(userSchema)
+    @body(projectSchema)
     public static async createUser(ctx: BaseContext) {
 
         // get a user repository to perform operations with user
-        const userRepository: Repository<User> = getManager().getRepository(User);
+        const userRepository: Repository<Project> = getManager().getRepository(Project);
 
         // build up entity user to be saved
-        const userToBeSaved: User = new User();
+        const userToBeSaved: Project = new Project();
         userToBeSaved.name = ctx.request.body.name;
-        userToBeSaved.email = ctx.request.body.email;
-        userToBeSaved.role = ctx.request.body.role || 'user';
+        userToBeSaved.desc = ctx.request.body.desc;
 
         // validate user entity
         const errors: ValidationError[] = await validate(userToBeSaved); // errors is an array of validation errors
@@ -70,7 +69,7 @@ console.log(ctx.query.filter);
             // return BAD REQUEST status code and errors array
             ctx.status = 400;
             ctx.body = errors;
-        } else if (await userRepository.findOne({ email: userToBeSaved.email })) {
+        } else if (await userRepository.findOne({ name: userToBeSaved.name })) {
             // return BAD REQUEST status code and email already exists error
             ctx.status = 400;
             ctx.body = 'The specified e-mail address already exists';
@@ -83,23 +82,23 @@ console.log(ctx.query.filter);
         }
     }
 
-    @request('put', '/users/{id}')
+    @request('put', '/projects/{id}')
     @summary('Update a user')
     @path({
         id: { type: 'number', required: true, description: 'id of user' }
     })
-    @body(userSchema)
+    @body(projectSchema)
     public static async updateUser(ctx: BaseContext) {
 
         // get a user repository to perform operations with user
-        const userRepository: Repository<User> = getManager().getRepository(User);
+        const userRepository: Repository<Project> = getManager().getRepository(Project);
 
         // update the user by specified id
         // build up entity user to be updated
-        const userToBeUpdated: User = new User();
+        const userToBeUpdated: Project = new Project();
         userToBeUpdated.id = +ctx.params.id || 0; // will always have a number, this will avoid errors
         userToBeUpdated.name = ctx.request.body.name;
-        userToBeUpdated.email = ctx.request.body.email;
+        userToBeUpdated.desc = ctx.request.body.desc;
 
         // validate user entity
         const errors: ValidationError[] = await validate(userToBeUpdated); // errors is an array of validation errors
@@ -113,7 +112,7 @@ console.log(ctx.query.filter);
             // return a BAD REQUEST status code and error message
             ctx.status = 400;
             ctx.body = 'The user you are trying to update doesn\'t exist in the db';
-        } else if (await userRepository.findOne({ id: Not(Equal(userToBeUpdated.id)), email: userToBeUpdated.email })) {
+        } else if (await userRepository.findOne({ id: Not(Equal(userToBeUpdated.id)), name: userToBeUpdated.name })) {
             // return BAD REQUEST status code and email already exists error
             ctx.status = 400;
             ctx.body = 'The specified e-mail address already exists';
@@ -127,7 +126,7 @@ console.log(ctx.query.filter);
 
     }
 
-    @request('delete', '/users/{id}')
+    @request('delete', '/projects/{id}')
     @summary('Delete user by id')
     @path({
         id: { type: 'number', required: true, description: 'id of user' }
@@ -135,10 +134,10 @@ console.log(ctx.query.filter);
     public static async deleteUser(ctx: BaseContext) {
 
         // get a user repository to perform operations with user
-        const userRepository = getManager().getRepository(User);
+        const userRepository = getManager().getRepository(Project);
 
         // find the user by specified id
-        const userToRemove: User = await userRepository.findOne(+ctx.params.id || 0);
+        const userToRemove: Project = await userRepository.findOne(+ctx.params.id || 0);
         if (!userToRemove) {
             // return a BAD REQUEST status code and error message
             ctx.status = 400;
@@ -155,23 +154,6 @@ console.log(ctx.query.filter);
             ctx.status = 204;
         }
 
-    }
-
-    @request('delete', '/testusers')
-    @summary('Delete users generated by integration and load tests')
-    public static async deleteTestUsers(ctx: BaseContext) {
-
-        // get a user repository to perform operations with user
-        const userRepository = getManager().getRepository(User);
-
-        // find test users
-        const usersToRemove: User[] = await userRepository.find({ where: { email: Like('%@citest.com') } });
-
-        // the user is there so can be removed
-        await userRepository.remove(usersToRemove);
-
-        // return a NO CONTENT status code
-        ctx.status = 204;
     }
 
 }

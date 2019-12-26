@@ -15,7 +15,7 @@ console.log(process.env.NODE_ENV);
 const isDevMode = true || process.env.NODE_ENV == 'development';
 
 const config: IConfig = {
-    port: +process.env.PORT || 3000,
+    port: +process.env.PORT || 4000,
     debugLogging: isDevMode,
     dbsslconn: !isDevMode,
     jwtSecret: process.env.JWT_SECRET || 'helloworld',
