@@ -1,5 +1,5 @@
 import { BaseContext } from 'koa';
-import { getManager, Repository, Not, Equal, Like } from 'typeorm';
+import { getManager, Repository, Not, Equal, Like, Any } from 'typeorm';
 import { validate, ValidationError } from 'class-validator';
 import { request, summary, path, body, responsesAll, tagsAll } from 'koa-swagger-decorator';
 import { User, userSchema } from '../entity/user';
@@ -14,9 +14,16 @@ export default class UserController {
 
         // get a user repository to perform operations with user
         const userRepository: Repository<User> = getManager().getRepository(User);
-console.log(ctx.query.filter);
+        console.log(ctx.query.filter);
+        const condition = JSON.parse(ctx.query.filter) as any;
+        const q = condition.q;
+        delete condition.q;
+        if (q) {
+            delete condition.q;
+            condition.name = Like(`%${q}%`);
+        }
         // load all users
-        const users: User[] = await userRepository.find(JSON.parse(ctx.query.filter));
+        const users: User[] = await userRepository.find(condition);
 
         // return OK status code and loaded users array
         ctx.status = 200;
